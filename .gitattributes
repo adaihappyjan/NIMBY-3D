@@ -1,0 +1,2 @@
+# keep every file exactly as packaged (no line-end conversion)
+* -text

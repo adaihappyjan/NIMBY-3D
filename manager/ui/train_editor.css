@@ -1,0 +1,282 @@
+/* Nimby3D train editor page (train_editor.js). Every class starts with te- so nothing clashes with
+   the app's own; colours, radii and fonts are the app's (style.css :root variables). */
+
+.te-root { min-width: 0; max-width: 100%; }
+.te { display: grid; gap: 18px; min-width: 0; }
+.te-head { display: flex; align-items: center; gap: 16px; padding: 18px 22px; flex-wrap: wrap; }
+.te-head .card-icon { width: 44px; height: 44px; border-radius: 13px; }
+.te-head .card-icon svg.i { width: 22px; height: 22px; }
+.te-head h1 { margin: 0; font: 700 22px/1.2 var(--font-display); letter-spacing: -.015em; }
+.te-head p { margin: 2px 0 0; color: var(--text-2); font-size: 13.5px; max-width: 70ch; }
+.te-head-text { min-width: 0; flex: 1 1 320px; }
+.te-head-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+.te-in, .te-sel, .te-area {
+  height: 32px; padding: 0 9px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-2);
+  color: var(--text); font: 12.5px/1.2 var(--font); outline: none; min-width: 0; width: 100%;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast), background-color var(--t-fast);
+}
+.te-in.te-num { font-family: var(--mono); font-size: 12px; }
+.te-in:focus, .te-sel:focus, .te-area:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.te-sel { padding-right: 4px; cursor: pointer; }
+.te-sel option, .te-sel optgroup { background: var(--surface-solid); color: var(--text); }
+.te-area { height: auto; min-height: 160px; padding: 8px 10px; font: 12px/1.5 var(--mono); resize: vertical; white-space: pre; }
+.te-bad, .te-in.te-bad, .te-sel.te-bad { border-color: var(--danger) !important; box-shadow: 0 0 0 3px var(--danger-soft) !important; }
+.te-warned { border-color: color-mix(in srgb, var(--warn) 70%, transparent) !important; }
+.te-color { width: 34px; height: 30px; padding: 2px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface-2); cursor: pointer; flex: none; }
+.te-color::-webkit-color-swatch-wrapper { padding: 0; }
+.te-color::-webkit-color-swatch { border: 0; border-radius: 5px; }
+
+/* ---------------------------------------------------------------- the two columns */
+.te-main { display: grid; grid-template-columns: minmax(340px, 440px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.te-left { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.te-right { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+.te-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; }
+.te-tab {
+  display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 6px 0 11px; border-radius: 9px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text-2); font: 600 12.5px/1 var(--font);
+}
+.te-tab:hover { color: var(--text); background: var(--surface-hover); }
+.te-tab[aria-selected="true"] { color: var(--accent); background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+.te-tab .te-x { width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; color: var(--text-3); border: 0; background: none; cursor: pointer; padding: 0; }
+.te-tab .te-x:hover { color: var(--danger); background: var(--danger-soft); }
+.te-tab .te-x svg.i { width: 12px; height: 12px; }
+.te-tab .te-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--warn); }
+.te-tab-add { padding: 0 11px; }
+
+.te-group { padding: 0; overflow: hidden; }
+.te-group > summary {
+  list-style: none; display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; user-select: none;
+  font: 650 14px/1.2 var(--font-display);
+}
+.te-group > summary::-webkit-details-marker { display: none; }
+.te-group > summary:hover { background: var(--surface-hover); }
+.te-group > summary .te-chev { width: 16px; height: 16px; color: var(--text-3); transition: transform var(--t) var(--ease); transform: rotate(-90deg); }
+.te-group[open] > summary .te-chev { transform: none; }
+.te-group > summary .te-count { margin-left: auto; font: 600 11.5px/1 var(--font); color: var(--text-3); }
+.te-group > summary .te-count.te-has-err { color: var(--danger); }
+.te-group > summary .te-count.te-has-warn { color: var(--warn); }
+.te-gbody { padding: 4px 14px 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+.te-gbody > .te-wide { grid-column: 1 / -1; }
+.te-gnote { grid-column: 1 / -1; font-size: 12.5px; color: var(--text-2); line-height: 1.55; margin: 2px 0 2px; }
+.te-gnote code, .te-tut code, .te-res code { font-family: var(--mono); font-size: 11.8px; padding: 1px 5px; border-radius: 5px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); overflow-wrap: anywhere; }
+
+.te-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.te-lab { font-size: 12px; font-weight: 600; color: var(--text-2); display: flex; gap: 6px; align-items: baseline; min-width: 0; }
+.te-lab .te-unit { font-weight: 500; font-style: normal; color: var(--text-3); font-size: 11px; }
+.te-hint { font-size: 11.5px; color: var(--text-3); line-height: 1.45; }
+.te-check { display: flex; gap: 8px; align-items: center; font-size: 12.5px; color: var(--text-2); cursor: pointer; min-height: 32px; }
+.te-check input { width: 15px; height: 15px; margin: 0; accent-color: var(--accent); flex: none; }
+.te-row { display: flex; gap: 8px; align-items: center; min-width: 0; }
+.te-row > .te-in, .te-row > .te-sel { flex: 1; }
+
+/* tables (profile, window rows, lights...) */
+.te-table { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.te-table-head, .te-trow { display: grid; gap: 6px; align-items: center; }
+.te-table-head { font-size: 11px; font-weight: 650; color: var(--text-3); text-transform: none; padding: 0 2px; }
+.te-table-head span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.te-trow .te-in, .te-trow .te-sel { height: 30px; padding: 0 7px; }
+.te-icon-btn {
+  width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; cursor: pointer; flex: none; padding: 0;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text-3);
+}
+.te-icon-btn:hover { color: var(--text); background: var(--surface-hover); }
+.te-icon-btn.te-del:hover { color: var(--danger); background: var(--danger-soft); }
+.te-icon-btn svg.i { width: 14px; height: 14px; }
+.te-table-foot { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.te-table-foot .te-hint { margin-left: 4px; }
+
+/* materials */
+.te-mats { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px; }
+.te-mat { display: grid; grid-template-columns: 34px minmax(0, 1fr) 58px 58px 58px 28px; gap: 6px; align-items: center; padding: 6px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); }
+.te-mat-name { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.te-mat-name b { font-size: 12px; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.te-mat-name .te-in { height: 26px; font-size: 11.5px; font-family: var(--mono); }
+.te-mat .te-in.te-num { height: 26px; padding: 0 5px; font-size: 11.5px; }
+.te-mat-head { display: grid; grid-template-columns: 34px minmax(0, 1fr) 58px 58px 58px 28px; gap: 6px; font-size: 10.5px; font-weight: 650; color: var(--text-3); padding: 0 6px; }
+.te-mat-emi { display: flex; gap: 6px; align-items: center; grid-column: 2 / -1; font-size: 11.5px; color: var(--text-3); }
+.te-mat-emi .te-color { width: 26px; height: 22px; }
+.te-swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; border: 1px solid var(--border-strong); vertical-align: -1px; margin-right: 4px; }
+
+/* ---------------------------------------------------------------- the viewer */
+.te-view { padding: 0; overflow: hidden; }
+.te-view-bar { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.te-view-bar .seg button[aria-pressed="true"] { background: var(--surface-raised); color: var(--text); box-shadow: 0 1px 3px rgba(0, 0, 0, .18); }
+.te-view-bar .te-spacer { flex: 1; }
+.te-view-bar label.te-slider { display: inline-flex; gap: 8px; align-items: center; font-size: 12px; color: var(--text-2); font-weight: 600; }
+.te-view-bar input[type="range"] { width: 110px; accent-color: var(--accent); }
+.te-view-bar .te-sel { width: auto; height: 28px; }
+.te-toggle {
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text-2); font: 600 12px/1 var(--font);
+}
+.te-toggle:hover { color: var(--text); background: var(--surface-hover); }
+.te-toggle[aria-pressed="true"] { color: var(--accent); background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+.te-toggle svg.i { width: 14px; height: 14px; }
+.te-canvas-wrap { position: relative; height: clamp(300px, 46vh, 560px); background:
+  radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 60%),
+  linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent-2) 5%, transparent)); }
+.te-canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; outline: none; }
+.te-canvas-wrap canvas.te-drag { cursor: grabbing; }
+.te-overlay { position: absolute; left: 12px; bottom: 10px; right: 12px; display: flex; justify-content: space-between; gap: 10px; pointer-events: none; font-size: 11.5px; color: var(--text-3); }
+.te-overlay .te-busy { display: inline-flex; align-items: center; gap: 7px; color: var(--text-2); }
+.te-overlay .spin { width: 13px; height: 13px; border-width: 2px; color: var(--accent); }
+.te-nogl { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; text-align: center; color: var(--text-2); font-size: 13px; }
+.te-stale { position: absolute; top: 10px; left: 12px; right: 12px; pointer-events: none; display: flex; gap: 8px; padding: 8px 11px; border-radius: 10px;
+  background: var(--danger-soft); color: color-mix(in srgb, var(--danger) 80%, var(--text)); font-size: 12.5px; backdrop-filter: blur(6px); }
+.te-stale svg.i { width: 15px; height: 15px; color: var(--danger); margin-top: 1px; }
+
+.te-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 12px; }
+.te-stat { padding: 8px 10px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); min-width: 0; cursor: pointer; text-align: left; color: inherit; font: inherit; }
+.te-stat:hover { background: var(--surface-hover); }
+.te-stat[aria-current="true"] { border-color: color-mix(in srgb, var(--accent) 45%, transparent); background: var(--accent-soft); }
+.te-stat .te-lod { font-size: 11px; font-weight: 700; color: var(--text-3); letter-spacing: .04em; }
+.te-stat .te-tri { font: 650 17px/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+.te-stat .te-sub { font-size: 11.5px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.te-problems { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; }
+.te-problems:empty { display: none; }
+.te-prob { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; line-height: 1.45; color: var(--text-2); padding: 7px 9px; border-radius: 9px; background: var(--surface-2); border: 1px solid var(--border); cursor: default; }
+.te-prob[data-path] { cursor: pointer; }
+.te-prob[data-path]:hover { background: var(--surface-hover); }
+.te-prob svg.i { width: 15px; height: 15px; margin-top: 1px; flex: none; }
+.te-prob.te-err svg.i { color: var(--danger); }
+.te-prob.te-warn svg.i { color: var(--warn); }
+.te-prob.te-ok svg.i { color: var(--ok); }
+.te-prob .te-path { font-family: var(--mono); font-size: 11px; color: var(--text-3); margin-right: 6px; }
+
+/* ---------------------------------------------------------------- export */
+.te-export { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+.te-export h2, .te-tut h2 { margin: 0; font: 650 17px/1.3 var(--font-display); }
+.te-export-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px 18px; }
+.te-modinfo { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--border); min-width: 0; }
+.te-modinfo .te-path { font-family: var(--mono); font-size: 11.5px; color: var(--text-2); overflow-wrap: anywhere; }
+.te-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.te-map { display: flex; flex-direction: column; gap: 6px; }
+.te-maprow { display: grid; grid-template-columns: 22px minmax(0, 1fr) 20px minmax(0, 1fr); gap: 8px; align-items: center; padding: 7px 9px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); }
+.te-maprow input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent); margin: 0; }
+.te-maprow .te-arrow { color: var(--text-3); text-align: center; }
+.te-maprow .te-spec { font-weight: 650; font-size: 12.5px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.te-maprow .te-spec small { display: block; font-weight: 500; color: var(--text-3); font-size: 11px; }
+.te-maprow .te-mapnote { grid-column: 2 / -1; font-size: 11.5px; color: var(--warn); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.te-export-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.te-export-actions .btn-primary { height: 44px; font-size: 14.5px; padding: 0 22px 0 18px; }
+.te-res { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); }
+.te-res h3 { margin: 0; font: 650 13.5px/1.3 var(--font-display); display: flex; gap: 8px; align-items: center; }
+.te-res h3 svg.i { width: 16px; height: 16px; }
+.te-res.te-good h3 svg.i { color: var(--ok); }
+.te-res.te-badres h3 svg.i { color: var(--danger); }
+.te-loglines { margin: 0; padding: 8px 10px; border-radius: 9px; background: var(--surface-solid); border: 1px solid var(--border); font: 11.8px/1.6 var(--mono); color: var(--text-2); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 180px; overflow: auto; }
+.te-files { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 3px 12px; font: 11.5px/1.6 var(--mono); color: var(--text-2); max-height: 170px; overflow: auto; }
+.te-files li { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.te-files li span { color: var(--text-3); }
+
+/* ---------------------------------------------------------------- tutorial */
+.te-tut { padding: 0; overflow: hidden; }
+.te-tut > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; }
+.te-tut > summary::-webkit-details-marker { display: none; }
+.te-tut > summary:hover { background: var(--surface-hover); }
+.te-tut > summary .te-chev { width: 16px; height: 16px; color: var(--text-3); transition: transform var(--t) var(--ease); transform: rotate(-90deg); margin-left: auto; }
+.te-tut[open] > summary .te-chev { transform: none; }
+.te-tut-body { padding: 4px 22px 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 28px; }
+.te-tut-sec { min-width: 0; }
+.te-tut-sec.te-wide { grid-column: 1 / -1; }
+.te-tut h3 { font: 650 14px/1.3 var(--font-display); margin: 14px 0 6px; color: var(--text); display: flex; gap: 8px; align-items: center; }
+.te-tut h3 .te-num { width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--grad); color: var(--accent-ink); font: 700 12px/1 var(--font-display); flex: none; }
+.te-tut p, .te-tut li { color: var(--text-2); font-size: 13.2px; line-height: 1.65; }
+.te-tut p { margin: 0 0 8px; }
+.te-tut ul, .te-tut ol { margin: 0 0 8px; padding-left: 20px; }
+.te-tut li { margin: 3px 0; }
+.te-tut li::marker { color: var(--accent); }
+.te-tut b { color: var(--text); font-weight: 650; }
+.te-tree { margin: 4px 0 10px; padding: 10px 12px; border-radius: 10px; background: var(--surface-solid); border: 1px solid var(--border); font: 11.8px/1.65 var(--mono); color: var(--text-2); white-space: pre; overflow: auto; }
+.te-tree b { color: var(--accent); font-weight: 650; }
+.te-callout { display: flex; gap: 10px; padding: 10px 13px; border-radius: 11px; background: var(--info-soft); color: var(--text-2); font-size: 13px; line-height: 1.55; margin: 6px 0 8px; }
+.te-callout svg.i { width: 16px; height: 16px; color: var(--info); margin-top: 2px; flex: none; }
+.te-callout.te-warnbox { background: var(--warn-soft); }
+.te-callout.te-warnbox svg.i { color: var(--warn); }
+
+/* ---------------------------------------------------------------- your mod and unit */
+.te-target { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+.te-target-row { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+.te-target-row .te-sel { width: auto; max-width: 340px; flex: 1 1 200px; }
+.te-target-title { display: inline-flex; align-items: center; gap: 8px; font: 650 14px/1.2 var(--font-display); margin-right: 4px; }
+.te-target-title svg.i { width: 17px; height: 17px; color: var(--accent); }
+.te-target-facts { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 12.5px; color: var(--text-2); }
+.te-fact b { color: var(--text); font-variant-numeric: tabular-nums; }
+.te-target-facts code, .te-sprite code, .te-guide code { font-family: var(--mono); font-size: 11.8px; padding: 1px 5px; border-radius: 5px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); overflow-wrap: anywhere; }
+
+/* the right column scrolls by itself when it is taller than the window */
+.te-right { max-height: calc(100vh - 100px); overflow-y: auto; overscroll-behavior: contain; padding-bottom: 2px; }
+.te-right > * { flex-shrink: 0; }
+
+/* ---------------------------------------------------------------- the mod's picture */
+.te-sprite { padding: 0; overflow: hidden; }
+.te-sprite-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; padding: 10px 12px 6px; font-size: 13px; }
+.te-sprite-head b { font: 650 13.5px/1.2 var(--font-display); }
+.te-layers { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 8px; }
+.te-layer { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); font-size: 12px; color: var(--text-2); cursor: pointer; }
+.te-layer input[type="checkbox"] { width: 14px; height: 14px; margin: 0; accent-color: var(--accent); }
+.te-layer .te-tint { width: 24px; height: 20px; }
+.te-sprite-wrap { position: relative; margin: 0 12px; border-radius: 10px; border: 1px solid var(--border); overflow: hidden;
+  background-color: var(--surface-solid);
+  background-image: linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%), linear-gradient(45deg, var(--surface-2) 25%, transparent 25%, transparent 75%, var(--surface-2) 75%);
+  background-size: 14px 14px; background-position: 0 0, 7px 7px; }
+.te-sprite-wrap canvas { display: block; width: 100%; cursor: crosshair; image-rendering: pixelated; }
+.te-sprite-foot { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; padding: 8px 12px 12px; }
+.te-sprite-foot .te-lab svg.i { width: 14px; height: 14px; color: var(--accent); }
+.te-read { font: 11.5px/1.4 var(--mono); color: var(--text-2); display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
+.te-read .te-swatch { width: 14px; height: 14px; margin: 0; border-radius: 4px; }
+
+/* ---------------------------------------------------------------- the step-by-step guide */
+.te-guide-btn { border-color: color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); background: var(--accent-soft); }
+.te-guide-btn[aria-pressed="true"] { background: var(--grad); color: var(--accent-ink); border-color: transparent; }
+.te-guide { padding: 14px 16px 12px; display: flex; flex-direction: column; gap: 8px; border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: var(--shadow), 0 0 0 3px var(--accent-soft); }
+.te-guide-head { display: flex; align-items: center; gap: 10px; }
+.te-guide-head h3 { margin: 0; font: 700 16px/1.3 var(--font-display); flex: 1; }
+.te-guide-n { font: 700 11.5px/1 var(--font); color: var(--accent-ink); background: var(--grad); padding: 5px 9px; border-radius: 999px; white-space: nowrap; }
+.te-guide-title { font-size: 11.5px; font-weight: 650; color: var(--text-3); letter-spacing: .02em; margin-top: -4px; }
+.te-guide-body { font-size: 13px; line-height: 1.6; color: var(--text-2); }
+.te-guide-body p { margin: 0 0 6px; }
+.te-guide-body ul, .te-guide-body ol { margin: 0 0 6px; padding-left: 18px; }
+.te-guide-body li { margin: 3px 0; }
+.te-guide-body li::marker { color: var(--accent); }
+.te-guide-body b { color: var(--text); }
+.te-guide-ex { display: flex; gap: 8px; padding: 8px 10px; border-radius: 10px; background: var(--info-soft); font-size: 12.5px; line-height: 1.55; color: var(--text-2); }
+.te-guide-ex svg.i { width: 15px; height: 15px; color: var(--info); flex: none; margin-top: 2px; }
+.te-guide-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.te-guide-nav { display: flex; align-items: center; gap: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+.te-guide-next { background: var(--grad); color: var(--accent-ink); border-color: transparent; }
+.te-guide-next:hover { background: var(--grad); filter: brightness(1.06); }
+.te-gdots { display: flex; gap: 4px; flex: 1; justify-content: center; flex-wrap: wrap; }
+.te-gdot { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--surface-2); color: var(--text-3); font: 650 10.5px/1 var(--font); cursor: pointer; padding: 0; }
+.te-gdot:hover { color: var(--text); background: var(--surface-hover); }
+.te-gdot[aria-current="true"] { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.te-hl { position: relative; outline: 2px solid var(--accent) !important; outline-offset: 2px; animation: te-pulse 1.6s var(--ease) 3; }
+@keyframes te-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); } 50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent); } }
+
+/* ---------------------------------------------------------------- imports and Blender */
+.te-lodrow { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 28px; gap: 8px; align-items: center; padding: 5px 8px; border-radius: 9px; background: var(--surface-2); border: 1px solid var(--border); }
+.te-lodrow b { font: 700 11.5px/1 var(--font); color: var(--text-3); }
+.te-lodrow .te-path { font: 11.5px/1.3 var(--mono); color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.te-lodrow i { color: var(--text-3); font-style: italic; font-family: var(--font); }
+.te-ntable { width: 100%; border-collapse: collapse; margin: 4px 0 10px; font-size: 12.5px; }
+.te-ntable td { padding: 6px 8px; border-top: 1px solid var(--border); vertical-align: top; color: var(--text-2); line-height: 1.5; }
+.te-ntable tr:first-child td { border-top: 0; }
+.te-ntable td:first-child { white-space: nowrap; width: 1%; }
+.te-checklist { list-style: none; padding-left: 0 !important; }
+.te-checklist li { position: relative; padding-left: 24px; }
+.te-checklist li::before { content: ""; position: absolute; left: 2px; top: 5px; width: 13px; height: 13px; border-radius: 4px; border: 1.5px solid var(--accent); }
+
+/* ---------------------------------------------------------------- narrower windows */
+@media (max-width: 1100px) {
+  .te-main { grid-template-columns: minmax(0, 1fr); }
+  .te-right { position: static; order: -1; max-height: none; overflow: visible; }
+  .te-tut-body, .te-export-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .te-gbody { grid-template-columns: minmax(0, 1fr); }
+  .te-stats { grid-template-columns: minmax(0, 1fr); }
+}

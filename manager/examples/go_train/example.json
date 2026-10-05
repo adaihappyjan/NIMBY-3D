@@ -1,0 +1,119 @@
+{
+ "title": {
+  "zh": "GO Transit 列车：MP40 机车 + BiLevel 双层客车",
+  "en": "GO Transit train: MP40 locomotive + BiLevel coaches"
+ },
+ "description": {
+  "zh": "创意工坊模组 2388066983（MP40PH-3C+BiLevels，作者 Connie & tehsuigi）三种车辆的三维模型，由 GO 参考模型包 0.2.0 改写成编辑器规格。用这些规格生成的 GOV2 文件与已发布的模型包逐字节相同。",
+  "en": "3D models for the three units of the Workshop mod 2388066983 (MP40PH-3C+BiLevels by Connie & tehsuigi), the GO reference pack 0.2.0 rewritten as editor specs. The GOV2 files generated from these specs are byte for byte the published pack's."
+ },
+ "mod": {
+  "workshop_id": "2388066983",
+  "name": "MP40PH-3C+BiLevels",
+  "author": "Connie & tehsuigi",
+  "consist": "mp40_bl 1 1 2, bilevel1 1 6 11, bicab1 flip"
+ },
+ "units": [
+  {
+   "unit_id": "mp40_bl",
+   "kind": "locomotive",
+   "file": "mp40_bl.train.json",
+   "label": {
+    "zh": "MPI MP40PH-3C 内燃机车（罩式）",
+    "en": "MPI MP40PH-3C diesel locomotive (hood unit)"
+   }
+  },
+  {
+   "unit_id": "bilevel1",
+   "kind": "coach",
+   "file": "bilevel1.train.json",
+   "label": {
+    "zh": "Bombardier BiLevel 双层客车",
+    "en": "Bombardier BiLevel coach"
+   }
+  },
+  {
+   "unit_id": "bicab1",
+   "kind": "cab_car",
+   "file": "bicab1.train.json",
+   "label": {
+    "zh": "Bombardier BiLevel 双层控制车（+X 端为司机室）",
+    "en": "Bombardier BiLevel cab car (the cab at +X)"
+   }
+  }
+ ],
+ "layout": [
+  "steamapps\\workshop\\content\\1134710\\2388066983\\   (the mod folder: its name is the Workshop item id)",
+  "  mod.txt                       ([TrainUnit] id=mp40_bl / bilevel1 / bicab1)",
+  "  mp40bl\\...                    (the mod's own textures, untouched)",
+  "  nimby3d\\",
+  "    manifest.json               (schema 2, GOV2, source_workshop_id \"2388066983\", one model per unit)",
+  "    mp40_bl_lod0.gov  mp40_bl_lod1.gov  mp40_bl_lod2.gov",
+  "    bilevel1_lod0.gov bilevel1_lod1.gov bilevel1_lod2.gov",
+  "    bicab1_lod0.gov   bicab1_lod1.gov   bicab1_lod2.gov",
+  "    *.rig.json, *.train.json    (optional: parts and door bindings; the editor's spec)"
+ ],
+ "expected": {
+  "mp40_bl": [
+   {
+    "lod": 0,
+    "native_sha256": "7b09e6eefb9568f13330311353075e892b5c636ec3ffe85b0d8ed06bff1b51c4",
+    "rig_sha256": "3e1e0820cbba34726284f2e6045f25ecf077978562f94d9afcadb95b64c96b92",
+    "triangles": 5564
+   },
+   {
+    "lod": 1,
+    "native_sha256": "46cb4c9dcd315a01bb2b03827930ea5c51449d67e6394c6e3a120594a371492f",
+    "rig_sha256": "0f71d8f9235684dcc6f301bf29da89d55bff2803dad21c04fa05e751f3856a86",
+    "triangles": 2668
+   },
+   {
+    "lod": 2,
+    "native_sha256": "7be04b2876d0caacc358236957f7598dc8e49a555c4ca2b48351b1223956d352",
+    "rig_sha256": "6db4d96f4391007c93c0db18950dd5393535478ba913a771928dc3140b0384e7",
+    "triangles": 668
+   }
+  ],
+  "bilevel1": [
+   {
+    "lod": 0,
+    "native_sha256": "352cec692414cd860f034b6ce610e3e0264e979ba97edbcf7f6f3cbc582bf832",
+    "rig_sha256": "29e43a96e30ffd89f0fcd7e1bb23226017a3d71643823a0a9873c39846d198ad",
+    "triangles": 12518
+   },
+   {
+    "lod": 1,
+    "native_sha256": "3810610e9a7e1562c02aa756d8d656df842d71703a8a68aa7658f25c3999f9c2",
+    "rig_sha256": "06bd139ec8c0d3dc177f22f581624e8a00c08b3f7422790f95ce8d2c9a8304d4",
+    "triangles": 7038
+   },
+   {
+    "lod": 2,
+    "native_sha256": "b1bb1a49effbcf1e844b30bfc7f1b2eb55fdf83a580127c71276d9c6b81c14bd",
+    "rig_sha256": "359aad08d26d19a60e610fed09b8189404b0e9791c1c88a5b8f8363efdf36916",
+    "triangles": 1888
+   }
+  ],
+  "bicab1": [
+   {
+    "lod": 0,
+    "native_sha256": "562c79e2d26371cf3f288d76d77738b2594146b2d4cf63a6a32ac0d596f8d756",
+    "rig_sha256": "6c2d96acdfde3b4bd9fabb668ebd2a4a06ecf6e83fb0be508068cb309231ddf6",
+    "triangles": 13050
+   },
+   {
+    "lod": 1,
+    "native_sha256": "4ce9a431af74ead454b382b73ab799f9cb0dc3dc65efd71c258a4100fbe5218f",
+    "rig_sha256": "6d98fccba9ec1d7ff89f1d945b71eae38e45b5918462a0e094e289d803fdd66a",
+    "triangles": 7370
+   },
+   {
+    "lod": 2,
+    "native_sha256": "dc940bde8dec46b83bb10b5dbe44577a68ddc8e9f01b050be536bad3e63110ae",
+    "rig_sha256": "4160ba0b57415873ea788a01bb8d35e1a013a61fce7639c6ba6eb55b6ee93837",
+    "triangles": 2052
+   }
+  ]
+ },
+ "reference": "GO Train reference assets 0.2.0 (experiments/go_train_assets_v1/go_train.py), deployed in the Workshop item's nimby3d folder"
+}

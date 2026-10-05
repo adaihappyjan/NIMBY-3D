@@ -1,0 +1,34 @@
+; mod.txt of the Workshop item 2388066983 "MP40PH-3C+BiLevels" by Connie & tehsuigi: an EXCERPT.
+; Only what matters for 3D models is kept: each [TrainUnit]'s id, length and width (the full file
+; also has speeds, prices, the textures tex_base / tex_top / tex_decors and the [TrainMultipleUnit]).
+; The nimby3d add-on gives a unit a model when the mod's nimby3d\manifest.json has a model whose
+; "unit_id" is exactly the unit's id= below (same letters, same case).
+[ModMeta]
+schema=2
+name=MP40PH-3C+BiLevels
+author=Connie & tehsuigi
+version=2.0.0
+
+[TrainUnit]
+schema=2
+id=mp40_bl
+name_en=MPI MP40PH-3C
+tags=locomotive,commuter,regional,standard,diesel
+length=20.73
+width=3.2
+
+[TrainUnit]
+schema=2
+id=bilevel1
+name_en=Bombardier BiLevel Coach
+tags=coach,commuter,regional,standard
+length=25.91
+width=3
+
+[TrainUnit]
+schema=2
+id=bicab1
+name_en=Bombardier BiLevel Coach Cab Car
+tags=coach,end-of-train,commuter,regional,standard
+length=25.91
+width=3

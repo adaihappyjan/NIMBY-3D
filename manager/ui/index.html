@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Nimby3D</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<!-- the train editor's styles (manager/ui/train_editor.css; nothing happens when it is not there) -->
+<link rel="stylesheet" href="train_editor.css">
+</head>
+<body class="loading">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gLogoTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7cf5e2"/><stop offset="1" stop-color="#3ddbc4"/></linearGradient>
+    <linearGradient id="gLogoL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#36c7d6"/><stop offset="1" stop-color="#3b8cf0"/></linearGradient>
+    <linearGradient id="gLogoR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f86f7"/><stop offset="1" stop-color="#6b6cf0"/></linearGradient>
+  </defs>
+  <symbol id="logo" viewBox="0 0 32 32">
+    <path d="M16 2.6 28.2 9.6 16 16.6 3.8 9.6Z" fill="url(#gLogoTop)"/>
+    <path d="M3.8 9.6 16 16.6V30.4L3.8 23.4Z" fill="url(#gLogoL)"/>
+    <path d="M28.2 9.6 16 16.6V30.4L28.2 23.4Z" fill="url(#gLogoR)"/>
+    <path d="M8.1 12.1 20.3 5.1M11.4 14 23.6 7" stroke="#06312b" stroke-width="1.3" stroke-linecap="round" opacity=".75"/>
+    <path d="M9.6 11.1 12.6 12.9M12.6 9.4 15.6 11.1M15.6 7.6 18.6 9.4M18.6 5.9 21.6 7.6" stroke="#06312b" stroke-width="1" stroke-linecap="round" opacity=".45"/>
+  </symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+  <symbol id="i-update" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M16 12l-4-4-4 4M12 16V8"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 3.5V8H16"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.4-6.4L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.4 6.4L3 16M3 21v-5h5"/></symbol>
+  <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2.5v9M18.4 6.6a9 9 0 1 1-12.8 0"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3.5 6h17M8.5 6V4.2c0-.7.5-1.2 1.2-1.2h4.6c.7 0 1.2.5 1.2 1.2V6M18.5 6l-.8 13.2c-.1 1-.9 1.8-1.9 1.8H8.2c-1 0-1.8-.8-1.9-1.8L5.5 6M10 10.5v6M14 10.5v6"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.6l2 2.2h7.4A2.5 2.5 0 0 1 21 9.7v7.8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/></symbol>
+  <symbol id="i-folder-open" viewBox="0 0 24 24"><path d="M3 17V7.5A2.5 2.5 0 0 1 5.5 5h3.6l2 2.2h6.4A2.5 2.5 0 0 1 20 9.7v1"/><path d="M3 17l2.2-5.6A2 2 0 0 1 7 10h13.2a1.2 1.2 0 0 1 1.1 1.6l-2.1 6.3a2 2 0 0 1-1.9 1.4H5a2 2 0 0 1-2-2.3"/></symbol>
+  <symbol id="i-gamepad" viewBox="0 0 24 24"><path d="M6.5 11.5h4M8.5 9.5v4M15 12h.01M18 10h.01"/><path d="M17.3 5.5H6.7a4 4 0 0 0-4 3.6l-.7 6.6A3 3 0 0 0 5 19c1 0 1.6-.5 2.2-1.2L9 16h6l1.8 1.8c.6.7 1.2 1.2 2.2 1.2a3 3 0 0 0 3-3.3l-.7-6.6a4 4 0 0 0-4-3.6z"/></symbol>
+  <symbol id="i-cube" viewBox="0 0 24 24"><path d="M20.5 16.2V7.8a1.8 1.8 0 0 0-.9-1.6l-6.7-3.9a1.8 1.8 0 0 0-1.8 0L4.4 6.2a1.8 1.8 0 0 0-.9 1.6v8.4a1.8 1.8 0 0 0 .9 1.6l6.7 3.9a1.8 1.8 0 0 0 1.8 0l6.7-3.9a1.8 1.8 0 0 0 .9-1.6z"/><path d="M3.8 7 12 12l8.2-5M12 21.7V12"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11 3.5l1.8 4.7 4.7 1.8-4.7 1.8L11 16.5l-1.8-4.7L4.5 10l4.7-1.8zM18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 13.4A8.5 8.5 0 1 1 10.6 3.5a6.6 6.6 0 0 0 9.9 9.9z"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2.5" y="3.5" width="19" height="13" rx="2.2"/><path d="M8 20.5h8M12 16.5v4"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6.5 9.2 17.3 4 12.1"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.2 12.3l2.6 2.6 5-5.4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4.5M12 17h.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4.5M12 8h.01"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 21.5s7.5-3.6 7.5-9.4V5.6L12 2.8 4.5 5.6v6.5c0 5.8 7.5 9.4 7.5 9.4z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5 16 16"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><path d="M4.5 17l5.5-5-5.5-5M12 19h7.5"/></symbol>
+  <symbol id="i-minus-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v10.5a1 1 0 0 0 1 1H10v-6h4v6h3.5a1 1 0 0 0 1-1V9"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5M8 7.5h8M8 11h6"/></symbol>
+  <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.2"/><path d="M6 10h.01M9 10h.01M12 10h.01M15 10h.01M18 10h.01M6 13.5h.01M18 13.5h.01M8.5 14h7"/></symbol>
+  <symbol id="i-mouse" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v3.5"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8M12 17h.01"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9-9.6C2 7.4 4.3 4.5 7.4 4.5c1.9 0 3.5 1 4.6 2.6 1.1-1.6 2.7-2.6 4.6-2.6 3.1 0 5.4 2.9 4.4 6.4-1.5 5-9 9.6-9 9.6z"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></symbol>
+  <symbol id="i-steam" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="15.5" cy="9.5" r="2.5"/><path d="M3.6 14.5l5.2 2.1M8.8 16.6a2 2 0 1 0 1.4-2.7M13.6 11.2l-3.4 2.7"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 3.5h6l-1 6 3.5 3V14h-11v-1.5L10 9.5zM12 14v6.5"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+  <symbol id="i-zip" viewBox="0 0 24 24"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M10 3v2M10 7v2M10 11v2M8.8 14.5h2.4v3H8.8z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3.5h11.5L20.5 7.5v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z"/><path d="M8 3.5v5h7v-5M7.5 20.5v-6h9v6"/></symbol>
+  <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M12 21.5s-7-6.2-7-11.5a7 7 0 0 1 14 0c0 5.3-7 11.5-7 11.5z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 2.5 8 12 13l9.5-5z"/><path d="M2.5 12.5 12 17.5l9.5-5M2.5 16.5 12 21.5l9.5-5"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.7-.8 1.7-1.6 0-.5-.2-.8-.5-1.2-.3-.4-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6h2A4.7 4.7 0 0 0 21 10.7C21 6.4 17 3 12 3z"/><circle cx="7.5" cy="11.5" r="1.2"/><circle cx="10" cy="7.5" r="1.2"/><circle cx="14.5" cy="7.5" r="1.2"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="9.5" r="1.8"/><path d="m21 16-5-5-9 9"/></symbol>
+  <symbol id="i-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l1.5-4M15 21l-1.5-4M8.5 14h.01M15.5 14h.01M9 6.5h6"/></symbol>
+</svg>
+
+<div class="backdrop" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" aria-hidden="true"><use href="#logo"/></svg>
+    <div>
+      <div class="wordmark" aria-label="Nimby3D">Nimby<b>3D</b><span class="ver" id="app-version"></span></div>
+      <div class="tagline" data-i18n="app.tagline"></div>
+    </div>
+  </div>
+  <div class="pills" aria-live="polite">
+    <span id="pill-state" class="pill" data-tone="muted"><span class="dot"></span><span class="label">…</span></span>
+    <span id="pill-running" class="pill pulse" data-tone="accent" hidden><span class="dot"></span><span class="label" data-i18n="pill.running"></span></span>
+    <span id="pill-busy" class="pill" data-tone="info" hidden><span class="spin" style="width:11px;height:11px;border-width:2px"></span><span class="label"></span></span>
+  </div>
+  <div class="spacer"></div>
+  <nav class="seg nav" role="tablist" id="nav" data-i18n-aria="nav.label">
+    <button type="button" role="tab" data-view="home" aria-selected="true" aria-controls="view-home"><svg class="i"><use href="#i-home"/></svg><span class="lbl" data-i18n="nav.home"></span></button>
+    <button type="button" role="tab" data-view="packs" aria-selected="false" aria-controls="view-packs"><svg class="i"><use href="#i-sparkles"/></svg><span class="lbl" data-i18n="nav.packs"></span></button>
+    <button type="button" role="tab" data-view="settings" aria-selected="false" aria-controls="view-settings"><svg class="i"><use href="#i-sliders"/></svg><span class="lbl" data-i18n="nav.settings"></span></button>
+    <button type="button" role="tab" data-view="guide" aria-selected="false" aria-controls="view-guide"><svg class="i"><use href="#i-book"/></svg><span class="lbl" data-i18n="nav.guide"></span></button>
+    <button type="button" role="tab" data-view="about" aria-selected="false" aria-controls="view-about"><svg class="i"><use href="#i-heart"/></svg><span class="lbl" data-i18n="nav.about"></span></button>
+  </nav>
+  <div class="toolbar">
+    <div class="seg" role="group" data-i18n-aria="lang.label">
+      <button type="button" data-lang="zh" aria-pressed="false">中文</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button type="button" id="skin-btn" class="icon-btn" data-i18n-aria="skin.button" data-i18n-title="skin.button"><svg class="i"><use href="#i-palette"/></svg></button>
+    <button type="button" id="theme-btn" class="icon-btn"><svg class="i"><use href="#i-monitor"/></svg></button>
+  </div>
+</header>
+
+<main>
+ <div class="view" id="view-home" role="tabpanel">
+  <div class="hero-wrap">
+  <img class="mascot hero-mascot" alt="" aria-hidden="true" hidden>
+  <section class="hero card" id="hero" style="--i:0" data-state="loading">
+    <div class="hero-text">
+      <div class="eyebrow" id="hero-eyebrow"><span class="sk">Nimby3D</span></div>
+      <h1 id="hero-title"><span class="sk">Nimby3D</span></h1>
+      <p class="sub" id="hero-sub"><span class="sk">………………………………………………</span></p>
+      <div class="hero-actions">
+        <button type="button" id="primary" class="btn btn-primary" disabled>
+          <svg class="i"><use href="#i-download"/></svg><span class="label" data-i18n="act.install"></span>
+        </button>
+        <div class="secondary">
+          <button type="button" id="btn-game-folder" class="btn btn-ghost" hidden><svg class="i"><use href="#i-folder"/></svg><span data-i18n="act.choose_game"></span></button>
+          <button type="button" id="btn-recheck" class="btn btn-ghost" hidden><svg class="i"><use href="#i-search"/></svg><span data-i18n="act.check_again"></span></button>
+          <button type="button" id="btn-toggle" class="btn btn-ghost" hidden><svg class="i"><use href="#i-power"/></svg><span class="label"></span></button>
+          <button type="button" id="btn-refresh" class="btn btn-ghost" hidden><svg class="i"><use href="#i-refresh"/></svg><span class="label" data-i18n="act.refresh"></span></button>
+          <button type="button" id="watch-switch" class="switch" role="switch" aria-checked="false" hidden>
+            <span class="track"><span class="thumb"></span></span><span class="label" data-i18n="act.watch"></span>
+          </button>
+          <button type="button" id="btn-remove" class="btn btn-danger" hidden><svg class="i"><use href="#i-trash"/></svg><span class="label" data-i18n="act.remove"></span></button>
+        </div>
+      </div>
+      <div class="notes" id="hero-notes"></div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg class="art" viewBox="18 40 424 300" role="img"><defs><radialGradient id="artGlow" cx="50%" cy="50%" r="50%"><stop class="g1" offset="0"/><stop class="g2" offset="1"/></radialGradient></defs><ellipse class="shine" cx="230" cy="250" rx="215" ry="80"/><g class="float"><polygon class="plate-l" points="39.5,185.2 230.0,295.2 230.0,282.0 39.5,172.0"/><polygon class="plate-r" points="420.5,185.2 230.0,295.2 230.0,282.0 420.5,172.0"/><polygon class="plate-t" points="230.0,62.0 420.5,172.0 230.0,282.0 39.5,172.0"/><polygon class="water" points="230.0,62.0 294.8,99.4 258.6,107.1 212.9,102.7 170.9,96.1"/><path class="grid" d="M249.1,73.0L58.5,183.0 M210.9,73.0L401.5,183.0 M268.1,84.0L77.6,194.0 M191.9,84.0L382.4,194.0 M287.2,95.0L96.6,205.0 M172.8,95.0L363.4,205.0 M306.2,106.0L115.7,216.0 M153.8,106.0L344.3,216.0 M325.3,117.0L134.7,227.0 M134.7,117.0L325.3,227.0 M344.3,128.0L153.8,238.0 M115.7,128.0L306.2,238.0 M363.4,139.0L172.8,249.0 M96.6,139.0L287.2,249.0 M382.4,150.0L191.9,260.0 M77.6,150.0L268.1,260.0 M401.5,161.0L210.9,271.0 M58.5,161.0L249.1,271.0"/><ellipse class="tree-s" cx="173.0" cy="114.8" rx="7" ry="3.2"/><circle class="tree" cx="169.0" cy="106.3" r="7"/><ellipse class="tree-s" cx="291.2" cy="121.4" rx="7" ry="3.2"/><circle class="tree" cx="287.2" cy="112.9" r="7"/><ellipse class="tree-s" cx="211.1" cy="123.6" rx="7" ry="3.2"/><circle class="tree" cx="207.1" cy="115.1" r="7"/><ellipse class="tree-s" cx="258.8" cy="133.5" rx="7" ry="3.2"/><circle class="tree" cx="254.8" cy="125.0" r="7"/><polygon class="b-l" points="304.3,133.5 321.5,143.4 321.5,121.4 304.3,111.5"/><polygon class="b-r" points="338.6,133.5 321.5,143.4 321.5,121.4 338.6,111.5"/><polygon class="b-t" points="321.5,101.6 338.6,111.5 321.5,121.4 304.3,111.5"/><ellipse class="tree-s" cx="289.3" cy="137.9" rx="7" ry="3.2"/><circle class="tree" cx="285.3" cy="129.4" r="7"/><polygon class="b-l" points="321.5,154.4 348.1,169.8 348.1,90.6 321.5,75.2"/><polygon class="b-r" points="371.0,156.6 348.1,169.8 348.1,90.6 371.0,77.4"/><polygon class="b-t" points="344.3,62.0 371.0,77.4 348.1,90.6 321.5,75.2"/><polygon class="b-l" points="298.6,172.0 317.6,183.0 317.6,147.8 298.6,136.8"/><polygon class="b-r" points="336.7,172.0 317.6,183.0 317.6,147.8 336.7,136.8"/><polygon class="b-t" points="317.6,125.8 336.7,136.8 317.6,147.8 298.6,136.8"/><polygon class="b-l" points="348.1,174.2 371.0,187.4 371.0,134.6 348.1,121.4"/><polygon class="b-r" points="393.9,174.2 371.0,187.4 371.0,134.6 393.9,121.4"/><polygon class="b-t" points="371.0,108.2 393.9,121.4 371.0,134.6 348.1,121.4"/><polygon class="b-l" points="325.3,189.6 348.1,202.8 348.1,101.6 325.3,88.4"/><polygon class="b-r" points="367.2,191.8 348.1,202.8 348.1,101.6 367.2,90.6"/><polygon class="b-t" points="344.3,77.4 367.2,90.6 348.1,101.6 325.3,88.4"/><ellipse class="tree-s" cx="335.0" cy="210.5" rx="7" ry="3.2"/><circle class="tree" cx="331.0" cy="202.0" r="7"/><polygon class="pier-l" points="150.9,127.5 157.0,131.0 157.0,110.7 150.9,107.2"/><polygon class="pier-r" points="164.6,126.6 157.0,131.0 157.0,110.7 164.6,106.3"/><polygon class="pier-t" points="158.6,102.8 164.6,106.3 157.0,110.7 150.9,107.2"/><polygon class="pier-l" points="192.8,151.6 198.9,155.2 198.9,134.9 192.8,131.4"/><polygon class="pier-r" points="206.6,150.8 198.9,155.2 198.9,134.9 206.6,130.5"/><polygon class="pier-t" points="200.5,127.0 206.6,130.5 198.9,134.9 192.8,131.4"/><polygon class="pier-l" points="234.8,175.8 240.9,179.4 240.9,159.1 234.8,155.6"/><polygon class="pier-r" points="248.5,175.0 240.9,179.4 240.9,159.1 248.5,154.7"/><polygon class="pier-t" points="242.4,151.2 248.5,154.7 240.9,159.1 234.8,155.6"/><polygon class="pier-l" points="276.7,200.0 282.8,203.6 282.8,183.3 276.7,179.8"/><polygon class="pier-r" points="290.4,199.2 282.8,203.6 282.8,183.3 290.4,178.9"/><polygon class="pier-t" points="284.3,175.4 290.4,178.9 282.8,183.3 276.7,179.8"/><polygon class="pier-l" points="311.0,219.8 317.1,223.4 317.1,203.1 311.0,199.6"/><polygon class="pier-r" points="324.7,219.0 317.1,223.4 317.1,203.1 324.7,198.7"/><polygon class="pier-t" points="318.6,195.2 324.7,198.7 317.1,203.1 311.0,199.6"/><polygon class="deck-l" points="130.9,99.0 150.0,110.0 150.0,106.0 130.9,95.0"/><polygon class="deck-r" points="163.3,102.3 150.0,110.0 150.0,106.0 163.3,98.3"/><polygon class="deck-t" points="144.3,87.3 163.3,98.3 150.0,106.0 130.9,95.0"/><polygon class="deck-l" points="150.0,110.0 169.0,121.0 169.0,117.0 150.0,106.0"/><polygon class="deck-r" points="182.4,113.3 169.0,121.0 169.0,117.0 182.4,109.3"/><polygon class="deck-t" points="163.3,98.3 182.4,109.3 169.0,117.0 150.0,106.0"/><polygon class="deck-l" points="169.0,121.0 188.1,132.0 188.1,128.0 169.0,117.0"/><polygon class="deck-r" points="201.4,124.3 188.1,132.0 188.1,128.0 201.4,120.3"/><polygon class="deck-t" points="182.4,109.3 201.4,120.3 188.1,128.0 169.0,117.0"/><polygon class="deck-l" points="188.1,132.0 207.1,143.0 207.1,139.0 188.1,128.0"/><polygon class="deck-r" points="220.5,135.3 207.1,143.0 207.1,139.0 220.5,131.3"/><polygon class="deck-t" points="201.4,120.3 220.5,131.3 207.1,139.0 188.1,128.0"/><polygon class="deck-l" points="207.1,143.0 226.2,154.0 226.2,150.0 207.1,139.0"/><polygon class="deck-r" points="239.5,146.3 226.2,154.0 226.2,150.0 239.5,142.3"/><polygon class="deck-t" points="220.5,131.3 239.5,142.3 226.2,150.0 207.1,139.0"/><polygon class="deck-l" points="226.2,154.0 245.2,165.0 245.2,161.0 226.2,150.0"/><polygon class="deck-r" points="258.6,157.3 245.2,165.0 245.2,161.0 258.6,153.3"/><polygon class="deck-t" points="239.5,142.3 258.6,153.3 245.2,161.0 226.2,150.0"/><polygon class="deck-l" points="245.2,165.0 264.3,176.0 264.3,172.0 245.2,161.0"/><polygon class="deck-r" points="277.6,168.3 264.3,176.0 264.3,172.0 277.6,164.3"/><polygon class="deck-t" points="258.6,153.3 277.6,164.3 264.3,172.0 245.2,161.0"/><polygon class="deck-l" points="264.3,176.0 283.3,187.0 283.3,183.0 264.3,172.0"/><polygon class="deck-r" points="296.7,179.3 283.3,187.0 283.3,183.0 296.7,175.3"/><polygon class="deck-t" points="277.6,164.3 296.7,175.3 283.3,183.0 264.3,172.0"/><polygon class="deck-l" points="283.3,187.0 302.4,198.0 302.4,194.0 283.3,183.0"/><polygon class="deck-r" points="315.7,190.3 302.4,198.0 302.4,194.0 315.7,186.3"/><polygon class="deck-t" points="296.7,175.3 315.7,186.3 302.4,194.0 283.3,183.0"/><polygon class="deck-l" points="302.4,198.0 321.5,209.0 321.5,205.0 302.4,194.0"/><polygon class="deck-r" points="334.8,201.3 321.5,209.0 321.5,205.0 334.8,197.3"/><polygon class="deck-t" points="315.7,186.3 334.8,197.3 321.5,205.0 302.4,194.0"/><path class="rail" d="M140.1,89.7L330.6,199.7"/><path class="rail" d="M135.1,92.6L325.6,202.6"/><g class="train"><polygon class="car-l" points="188.5,125.6 212.3,139.3 212.3,129.6 188.5,115.9"/><polygon class="car-r" points="221.0,134.3 212.3,139.3 212.3,129.6 221.0,124.6"/><polygon class="car-t" points="197.2,110.8 221.0,124.6 212.3,129.6 188.5,115.9"/><path class="win" d="M190.8,121.2L210.0,132.3"/><polygon class="car-l" points="214.2,140.4 238.0,154.2 238.0,144.5 214.2,130.8"/><polygon class="car-r" points="246.8,149.1 238.0,154.2 238.0,144.5 246.8,139.4"/><polygon class="car-t" points="223.0,125.7 246.8,139.4 238.0,144.5 214.2,130.8"/><path class="win" d="M216.5,136.0L235.7,147.1"/><polygon class="car-l" points="239.9,155.3 263.7,169.0 263.7,159.3 239.9,145.6"/><polygon class="car-r" points="272.5,164.0 263.7,169.0 263.7,159.3 272.5,154.3"/><polygon class="car-t" points="248.7,140.5 272.5,154.3 263.7,159.3 239.9,145.6"/><path class="win" d="M242.2,150.9L261.4,162.0"/></g><polygon class="b-l" points="100.4,158.8 123.3,172.0 123.3,141.2 100.4,128.0"/><polygon class="b-r" points="146.2,158.8 123.3,172.0 123.3,141.2 146.2,128.0"/><polygon class="b-t" points="123.3,114.8 146.2,128.0 123.3,141.2 100.4,128.0"/><polygon class="b-l" points="123.3,180.8 142.4,191.8 142.4,143.4 123.3,132.4"/><polygon class="b-r" points="169.0,176.4 142.4,191.8 142.4,143.4 169.0,128.0"/><polygon class="b-t" points="150.0,117.0 169.0,128.0 142.4,143.4 123.3,132.4"/><polygon class="b-l" points="75.7,177.5 106.2,195.1 106.2,173.1 75.7,155.5"/><polygon class="b-r" points="125.2,184.1 106.2,195.1 106.2,173.1 125.2,162.1"/><polygon class="b-t" points="94.7,144.5 125.2,162.1 106.2,173.1 75.7,155.5"/><ellipse class="tree-s" cx="115.9" cy="200.6" rx="7" ry="3.2"/><circle class="tree" cx="111.9" cy="192.1" r="7"/><ellipse class="tree-s" cx="184.5" cy="205.0" rx="7" ry="3.2"/><circle class="tree" cx="180.5" cy="196.5" r="7"/><ellipse class="tree-s" cx="148.3" cy="208.3" rx="7" ry="3.2"/><circle class="tree" cx="144.3" cy="199.8" r="7"/><ellipse class="tree-s" cx="184.5" cy="222.6" rx="7" ry="3.2"/><circle class="tree" cx="180.5" cy="214.1" r="7"/><polygon class="b-l" points="207.1,229.2 230.0,242.4 230.0,216.0 207.1,202.8"/><polygon class="b-r" points="252.9,229.2 230.0,242.4 230.0,216.0 252.9,202.8"/><polygon class="b-t" points="230.0,189.6 252.9,202.8 230.0,216.0 207.1,202.8"/><polygon class="b-l" points="231.9,247.9 251.0,258.9 251.0,214.9 231.9,203.9"/><polygon class="b-r" points="281.4,241.3 251.0,258.9 251.0,214.9 281.4,197.3"/><polygon class="b-t" points="262.4,186.3 281.4,197.3 251.0,214.9 231.9,203.9"/></g></svg>
+    </div>
+  </section>
+  </div>
+
+  <section class="cards">
+    <article class="card span-4" id="card-game" style="--i:1">
+      <div class="card-head">
+        <div class="card-icon"><svg class="i"><use href="#i-gamepad"/></svg></div>
+        <div class="card-title" data-i18n="card.game"></div>
+        <span class="badge" id="game-badge"><span class="dot"></span><span class="label sk">……</span></span>
+      </div>
+      <div class="card-body">
+        <dl class="rows">
+          <dt data-i18n="game.folder"></dt><dd class="path sk" id="game-dir">…</dd>
+          <dt data-i18n="game.found"></dt><dd id="game-how" class="sk">…</dd>
+          <dt data-i18n="game.saves"></dt><dd id="game-saves" class="sk" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">…</dd>
+        </dl>
+      </div>
+      <div class="card-actions">
+        <button type="button" class="btn btn-sm btn-ghost" id="btn-open-game"><svg class="i"><use href="#i-folder-open"/></svg><span data-i18n="act.open_folder"></span></button>
+        <button type="button" class="btn btn-sm btn-ghost" id="btn-choose-game"><svg class="i"><use href="#i-edit"/></svg><span data-i18n="act.change"></span></button>
+        <button type="button" class="btn btn-sm btn-ghost" id="btn-auto-game" hidden><svg class="i"><use href="#i-search"/></svg><span data-i18n="act.autodetect"></span></button>
+      </div>
+    </article>
+
+    <article class="card span-4" id="card-addon" style="--i:2">
+      <div class="card-head">
+        <div class="card-icon"><svg class="i"><use href="#i-cube"/></svg></div>
+        <div class="card-title" data-i18n="card.addon"></div>
+        <span class="badge" id="addon-badge"><span class="dot"></span><span class="label sk">……</span></span>
+      </div>
+      <div class="card-body">
+        <dl class="rows">
+          <dt data-i18n="addon.installed"></dt><dd id="addon-installed" class="sk">…</dd>
+          <dt data-i18n="addon.available"></dt><dd id="addon-available" class="sk">…</dd>
+          <dt>ReShade</dt><dd id="addon-reshade" class="sk">…</dd>
+          <dt data-i18n="addon.files"></dt>
+          <dd>
+            <span id="files-summary" class="sk">…</span>
+            <button type="button" class="files-toggle" id="files-toggle" aria-expanded="false" aria-controls="file-list" hidden><span data-i18n="files.show"></span><svg class="i"><use href="#i-chevron"/></svg></button>
+          </dd>
+        </dl>
+        <ul class="file-list" id="file-list" hidden></ul>
+      </div>
+      <div class="card-actions">
+        <button type="button" class="btn btn-sm btn-ghost" data-goto="settings"><svg class="i"><use href="#i-sliders"/></svg><span data-i18n="act.addon_settings"></span></button>
+      </div>
+    </article>
+
+    <article class="card span-4 data" id="card-data" style="--i:3">
+      <div class="card-head">
+        <div class="card-icon"><svg class="i"><use href="#i-database"/></svg></div>
+        <div class="card-title" data-i18n="card.data"></div>
+        <span class="badge" id="data-badge" hidden><span class="dot"></span><span class="label"></span></span>
+      </div>
+      <div class="card-body">
+        <dl class="rows">
+          <dt data-i18n="data.from"></dt><dd id="data-from" class="sk">…</dd>
+          <dt data-i18n="data.source"></dt><dd id="data-source" class="sk">…</dd>
+        </dl>
+        <div class="stats" id="data-stats">
+          <div class="stat"><div class="num sk" id="st-stations">—</div><div class="lbl" data-i18n="data.stations"></div></div>
+          <div class="stat"><div class="num sk" id="st-nodes">—</div><div class="lbl" data-i18n="data.nodes"></div></div>
+          <div class="stat"><div class="num sk" id="st-platforms">—</div><div class="lbl" data-i18n="data.platforms"></div></div>
+          <div class="stat"><div class="num sk" id="st-signals">—</div><div class="lbl" data-i18n="data.signals"></div></div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button type="button" class="btn btn-sm btn-ghost" id="btn-choose-save"><svg class="i"><use href="#i-file"/></svg><span data-i18n="act.choose_save"></span></button>
+        <button type="button" class="btn btn-sm btn-ghost" id="btn-newest-save" hidden><svg class="i"><use href="#i-clock"/></svg><span data-i18n="act.use_newest"></span></button>
+      </div>
+    </article>
+
+    <article class="card span-5" id="card-avatar" style="--i:4">
+      <div class="card-head">
+        <div class="card-icon"><svg class="i"><use href="#i-user"/></svg></div>
+        <div class="card-title" data-i18n="card.avatar"></div>
+      </div>
+      <div class="card-body">
+        <div class="avatar-row">
+          <div class="avatar-tile none" id="avatar-tile"><svg class="i"><use href="#i-user"/></svg></div>
+          <div style="min-width:0">
+            <div class="avatar-name sk" id="avatar-name">…</div>
+            <div class="avatar-meta" id="avatar-meta"></div>
+          </div>
+        </div>
+        <div class="hint"><svg class="i"><use href="#i-info"/></svg><span data-i18n="avatar.note"></span></div>
+      </div>
+      <div class="card-actions">
+        <button type="button" class="btn btn-sm btn-ghost" id="btn-choose-avatar"><svg class="i"><use href="#i-user"/></svg><span data-i18n="act.choose_avatar"></span></button>
+        <button type="button" class="btn btn-sm btn-ghost" id="btn-clear-avatar"><svg class="i"><use href="#i-x"/></svg><span data-i18n="act.clear_avatar"></span></button>
+      </div>
+    </article>
+
+    <article class="card span-7" id="card-packs" style="--i:5">
+      <div class="card-head">
+        <div class="card-icon"><svg class="i"><use href="#i-sparkles"/></svg></div>
+        <div class="card-title" data-i18n="card.packs"></div>
+        <span class="badge" id="packs-badge" data-tone="accent"><span class="label sk">…</span></span>
+      </div>
+      <div class="card-body">
+        <div class="pack-now" id="pack-now"></div>
+        <div class="chips" id="packs"></div>
+        <div class="hint"><svg class="i"><use href="#i-info"/></svg><span data-i18n="packs.hint"></span></div>
+      </div>
+      <div class="card-actions">
+        <button type="button" class="btn btn-sm btn-ghost" data-goto="packs"><svg class="i"><use href="#i-sparkles"/></svg><span data-i18n="act.manage_packs"></span></button>
+      </div>
+    </article>
+  </section>
+
+  <section class="card activity" id="activity" style="--i:6" data-open="true">
+    <div class="activity-head">
+      <button type="button" class="activity-toggle" id="activity-toggle" aria-expanded="true" aria-controls="activity-body">
+        <svg class="i chev"><use href="#i-chevron"/></svg><span data-i18n="activity.title"></span>
+      </button>
+      <span class="op-label" id="op-label"></span>
+      <div class="tabs" role="tablist" id="log-tabs">
+        <button type="button" role="tab" data-tab="activity" aria-selected="true" data-i18n="tab.activity"></button>
+        <button type="button" role="tab" data-tab="addon" aria-selected="false" data-i18n="tab.addon"></button>
+        <button type="button" role="tab" data-tab="reshade" aria-selected="false" data-i18n="tab.reshade"></button>
+      </div>
+      <div class="activity-tools">
+        <button type="button" class="icon-btn" id="btn-log-refresh" hidden><svg class="i"><use href="#i-refresh"/></svg></button>
+        <button type="button" class="icon-btn" id="btn-log-open" hidden><svg class="i"><use href="#i-folder-open"/></svg></button>
+      </div>
+    </div>
+    <div class="progress done" id="progress"><div class="bar"></div></div>
+    <div class="activity-body" id="activity-body">
+      <div class="inner">
+        <ol class="log" id="log" role="log" aria-live="polite"></ol>
+        <div class="logfile-meta" id="logfile-meta" hidden></div>
+        <pre class="logfile" id="logfile" hidden></pre>
+      </div>
+    </div>
+  </section>
+
+ </div>
+
+ <div class="view" id="view-packs" role="tabpanel" hidden></div>
+
+ <div class="view" id="view-settings" role="tabpanel" hidden></div>
+
+ <div class="view guide" id="view-guide" role="tabpanel" hidden>
+  <aside class="toc card" aria-labelledby="toc-title">
+    <div class="toc-title" id="toc-title" data-i18n="guide.toc"></div>
+    <div class="toc-links" id="toc"></div>
+  </aside>
+  <div class="guide-body">
+    <section class="card guide-head" style="--i:0">
+      <div class="card-icon big"><svg class="i"><use href="#i-book"/></svg></div>
+      <div>
+        <h1 data-i18n="guide.title"></h1>
+        <p class="sub" data-i18n="guide.lead"></p>
+      </div>
+    </section>
+    <div id="guide-sections"></div>
+  </div>
+ </div>
+
+ <div class="view about" id="view-about" role="tabpanel" hidden>
+  <div class="about-intro">
+    <p class="maker">MEET THE MAKER</p>
+    <h1 data-i18n="about.title"></h1>
+    <p class="sub" data-i18n="about.lead"></p>
+    <img class="mascot about-mascot" alt="" aria-hidden="true" hidden>
+  </div>
+  <article class="card author-card" style="--i:1">
+    <figure class="author-portrait">
+      <img src="assets/author-adaihappyjan.png" width="640" height="640" alt="" data-i18n-alt="about.alt">
+      <figcaption><strong>adaihappyjan</strong><span data-i18n="about.callme"></span>
+        <small class="credit"><span data-i18n="about.credit_pre"></span><button type="button" class="credit-link" data-link="pola" data-i18n="about.credit_artist"></button><span data-i18n="about.credit_mid"></span><button type="button" class="credit-link" data-link="artwork" data-i18n="about.credit_work"></button></small>
+      </figcaption>
+    </figure>
+    <div class="author-story">
+      <span class="author-handle">AUTHOR · @adaihappyjan</span>
+      <h3 data-i18n="about.hello"></h3>
+      <p class="first" data-i18n="about.p1"></p>
+      <p data-i18n="about.p2"></p>
+      <p data-i18n="about.p3"></p>
+      <p data-i18n="about.p4"></p>
+      <p data-i18n="about.p5"></p>
+      <p class="author-thanks" data-i18n="about.thanks"></p>
+      <div class="author-links">
+        <button type="button" class="author-link" data-link="repo"><span data-i18n="about.repo"></span><svg class="i"><use href="#i-external"/></svg></button>
+        <button type="button" class="author-link alt" data-link="toolkit"><span data-i18n="about.toolkit"></span><svg class="i"><use href="#i-external"/></svg></button>
+      </div>
+    </div>
+  </article>
+  <p class="art-credit"><svg class="i"><use href="#i-image"/></svg><span data-i18n="about.mascot_credit"></span></p>
+ </div>
+
+  <footer class="foot">
+    <span class="safe"><svg class="i"><use href="#i-shield"/></svg><span data-i18n="foot.safe"></span></span>
+    <span id="foot-version"></span>
+  </footer>
+</main>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<dialog id="dlg-remove" aria-labelledby="rm-title">
+  <form method="dialog" class="dlg">
+    <div class="dlg-head">
+      <div class="dlg-icon"><svg class="i"><use href="#i-trash"/></svg></div>
+      <div>
+        <h2 id="rm-title" data-i18n="rm.title"></h2>
+        <p class="lead" data-i18n="rm.lead"></p>
+      </div>
+    </div>
+    <div class="dlg-body">
+      <div class="blocked" id="rm-blocked" hidden><svg class="i"><use href="#i-alert"/></svg><span data-i18n="rm.blocked"></span></div>
+      <div>
+        <div class="dlg-section-title" data-i18n="rm.delete"></div>
+        <ul class="plan" id="rm-delete"></ul>
+        <div class="plan-total" id="rm-total"></div>
+      </div>
+      <div id="rm-edit-wrap" hidden>
+        <div class="dlg-section-title" data-i18n="rm.edit"></div>
+        <ul class="plan keep" id="rm-edit"></ul>
+      </div>
+      <div id="rm-keep-wrap" hidden>
+        <div class="dlg-section-title" data-i18n="rm.keep"></div>
+        <ul class="plan keep" id="rm-keep"></ul>
+      </div>
+      <label class="check"><input type="checkbox" id="rm-purge"><span data-i18n="rm.purge"></span></label>
+    </div>
+    <div class="dlg-foot">
+      <span class="note" data-tone="ok"><svg class="i"><use href="#i-shield"/></svg><span data-i18n="rm.saves"></span></span>
+      <button type="button" class="btn" id="rm-cancel" value="cancel" data-i18n="rm.cancel"></button>
+      <button type="button" class="btn btn-danger-solid" id="rm-confirm"><svg class="i"><use href="#i-trash"/></svg><span data-i18n="rm.confirm"></span></button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlg-path" aria-labelledby="path-title">
+  <form method="dialog" class="dlg" id="path-form">
+    <div class="dlg-head">
+      <div class="dlg-icon info"><svg class="i"><use href="#i-folder"/></svg></div>
+      <div>
+        <h2 id="path-title" data-i18n="path.title"></h2>
+        <p class="lead" data-i18n="path.lead"></p>
+      </div>
+    </div>
+    <div class="dlg-body">
+      <label class="field">
+        <input type="text" id="path-input" spellcheck="false" autocomplete="off" placeholder="C:\Program Files (x86)\Steam\steamapps\common\NIMBY Rails">
+        <span class="err" id="path-err"></span>
+      </label>
+    </div>
+    <div class="dlg-foot">
+      <button type="button" class="btn" id="path-cancel" data-i18n="rm.cancel"></button>
+      <button type="submit" class="btn btn-primary" style="height:38px;font-size:13.5px;padding:0 18px" id="path-ok" data-i18n="path.ok"></button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlg-skin" aria-labelledby="skin-title">
+  <form method="dialog" class="dlg dlg-wide" id="skin-form">
+    <div class="dlg-head">
+      <div class="dlg-icon info"><svg class="i"><use href="#i-palette"/></svg></div>
+      <div>
+        <h2 id="skin-title" data-i18n="skin.title"></h2>
+        <p class="lead" data-i18n="skin.lead"></p>
+      </div>
+    </div>
+    <div class="dlg-body">
+      <div class="skin-grid" id="skin-grid"></div>
+      <p class="skin-note"><svg class="i"><use href="#i-info"/></svg><span data-i18n="skin.note"></span></p>
+    </div>
+    <div class="dlg-foot">
+      <button type="button" class="btn" id="skin-close" data-i18n="skin.close"></button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlg-confirm" aria-labelledby="cf-title">
+  <form method="dialog" class="dlg dlg-sm" id="cf-form">
+    <div class="dlg-head">
+      <div class="dlg-icon info" id="cf-icon"><svg class="i"><use href="#i-help"/></svg></div>
+      <div>
+        <h2 id="cf-title"></h2>
+        <p class="lead" id="cf-body"></p>
+      </div>
+    </div>
+    <div class="dlg-foot">
+      <button type="button" class="btn" id="cf-cancel"></button>
+      <button type="submit" class="btn btn-primary btn-dlg" id="cf-ok"></button>
+    </div>
+  </form>
+</dialog>
+
+<script src="guide.js"></script>
+<script src="page_packs.js"></script>
+<script src="page_settings.js"></script>
+<script src="app.js"></script>
+<!-- the train editor (manager/ui/train_editor.js): it registers its page in window.N3D_PAGES; nothing happens when it is not there -->
+<script src="train_editor.js"></script>
+</body>
+</html>

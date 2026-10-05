@@ -1,0 +1,445 @@
+{
+ "format": "nimby3d-train",
+ "version": 1,
+ "unit_id": "bilevel1",
+ "label": "Bombardier BiLevel coach (GO Transit)",
+ "kind": "coach",
+ "length": 25.91,
+ "width": 3.0,
+ "height": 4.65,
+ "body": {
+  "style": "carbody",
+  "end_inset": 0.35,
+  "stations": [
+   -9.35,
+   -7.7,
+   -6.2,
+   0,
+   6.2,
+   7.7,
+   9.35
+  ],
+  "profile": [
+   {
+    "y": 0.72,
+    "w": 0.88,
+    "paint": "primary"
+   },
+   {
+    "y": 1.02,
+    "w": 1,
+    "paint": "primary"
+   },
+   {
+    "y": 2.1,
+    "w": 1,
+    "paint": "secondary"
+   },
+   {
+    "y": 3.12,
+    "w": 1,
+    "paint": "secondary"
+   },
+   {
+    "y": 3.34,
+    "w": 1,
+    "paint": "primary"
+   },
+   {
+    "y": 4.08,
+    "w": 0.92,
+    "paint": "roof"
+   },
+   {
+    "y": 4.46,
+    "w": 0.66,
+    "paint": "roof"
+   },
+   {
+    "y": 4.65,
+    "w": 0,
+    "paint": "roof"
+   }
+  ],
+  "underside_paint": "underframe",
+  "end_paint": "secondary",
+  "end_taper": {
+   "start": 7.7,
+   "roof_from": 3.12,
+   "roof_span": 1.53,
+   "roof_drop": 0.62
+  },
+  "end_skirt": {
+   "below": 1.05,
+   "base": 0.72,
+   "rise": 0.51,
+   "from": 6.2,
+   "length": 2
+  },
+  "aperture_min_z": 0.9,
+  "center_y": 2.6,
+  "lining": {
+   "inset": 0.075,
+   "roof_from": 3,
+   "roof_drop": 0.065,
+   "end_inset": 0.07
+  }
+ },
+ "windows": [
+  {
+   "y0": 3.48,
+   "y1": 4.01,
+   "width": 1.12,
+   "centers": [
+    -6.9,
+    -5.2,
+    -3.5,
+    -1.8,
+    0,
+    1.8,
+    3.5,
+    5.2,
+    6.9
+   ]
+  },
+  {
+   "y0": 1.48,
+   "y1": 2.0,
+   "width": 1.22,
+   "centers": [
+    -3.9,
+    -1.95,
+    0,
+    1.95,
+    3.9
+   ]
+  },
+  {
+   "y0": 2.32,
+   "y1": 2.83,
+   "width": 1.08,
+   "centers": [
+    -11.15,
+    -9.5,
+    9.5,
+    11.15
+   ]
+  }
+ ],
+ "window_frame": {
+  "border": 0.035,
+  "glass_inset": 0.022,
+  "reveal": 0.075
+ },
+ "doors": {
+  "centers": [
+   -6.1,
+   6.1
+  ],
+  "width": 1.12,
+  "y0": 0.84,
+  "y1": 2.72,
+  "leaves": 2,
+  "travel": 0.6,
+  "open_seconds": 1.6,
+  "close_seconds": 0.7,
+  "pocket_inset": 0.035,
+  "thickness": 0.036,
+  "window": {
+   "margin": 0.11,
+   "y0": 0.96,
+   "y1": 1.55
+  },
+  "paint": "secondary",
+  "inner_paint": "interior_wall",
+  "threshold": true,
+  "grab_handles": true
+ },
+ "cab": {
+  "ends": "none"
+ },
+ "gangway": {
+  "ends": "both",
+  "offset": 0.015,
+  "center_y": 1.93,
+  "height": 2.12,
+  "width": 0.97,
+  "depth": 0.12,
+  "paint": "gasket",
+  "door": {
+   "center_y": 1.92,
+   "height": 1.91,
+   "width": 0.72,
+   "thickness": 0.028,
+   "offset": 0.071,
+   "paint": "secondary"
+  },
+  "window": {
+   "y0": 2.13,
+   "y1": 2.7,
+   "half_width": 0.25,
+   "offset": 0.09
+  }
+ },
+ "logo": {
+  "type": "go",
+  "x": 0,
+  "y": 2.68,
+  "scale": 0.28,
+  "offset": 0.026
+ },
+ "side_ribs": {
+  "heights": [
+   1.15,
+   2.22,
+   3.23
+  ],
+  "radius": 0.011,
+  "offset": 0.008,
+  "end_inset": 0.15,
+  "door_gap": 0.02,
+  "paint": "steel"
+ },
+ "underfloor": [
+  {
+   "x": -3.4,
+   "y": 0.7,
+   "length": 2.1,
+   "height": 0.28,
+   "width": 1.8,
+   "paint": "underframe"
+  },
+  {
+   "x": 3.4,
+   "y": 0.7,
+   "length": 2.1,
+   "height": 0.28,
+   "width": 1.8,
+   "paint": "underframe"
+  }
+ ],
+ "roof": {
+  "pantographs": [],
+  "ac_units": []
+ },
+ "interior": {
+  "level": "detailed",
+  "layout": "bilevel"
+ },
+ "bogies": {
+  "pivot_fraction": 0.345,
+  "wheel_radius": 0.43,
+  "axles": [
+   -1.15,
+   1.15
+  ],
+  "frame_length": 3.1,
+  "side_frame_length": 2.95
+ },
+ "couplers": {
+  "inset": 0.3,
+  "height": 0.85
+ },
+ "details": [],
+ "materials": {
+  "primary": {
+   "name": "go_green",
+   "color": [
+    0.035,
+    0.29,
+    0.17
+   ],
+   "alpha": 1,
+   "metallic": 0.12,
+   "roughness": 0.38
+  },
+  "secondary": {
+   "name": "warm_white",
+   "color": [
+    0.87,
+    0.9,
+    0.85
+   ],
+   "alpha": 1,
+   "metallic": 0.12,
+   "roughness": 0.42
+  },
+  "glass": {
+   "name": "window_glass",
+   "color": [
+    0.12,
+    0.24,
+    0.27
+   ],
+   "alpha": 0.24,
+   "metallic": 0.05,
+   "roughness": 0.15,
+   "blend": true,
+   "double_sided": true
+  },
+  "gasket": {
+   "name": "window_gasket",
+   "color": [
+    0.018,
+    0.024,
+    0.025
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.72
+  },
+  "underframe": {
+   "name": "underframe",
+   "color": [
+    0.045,
+    0.053,
+    0.054
+   ],
+   "alpha": 1,
+   "metallic": 0.55,
+   "roughness": 0.64
+  },
+  "steel": {
+   "name": "steel",
+   "color": [
+    0.31,
+    0.35,
+    0.36
+   ],
+   "alpha": 1,
+   "metallic": 0.82,
+   "roughness": 0.32
+  },
+  "roof": {
+   "name": "roof_silver",
+   "color": [
+    0.6,
+    0.65,
+    0.64
+   ],
+   "alpha": 1,
+   "metallic": 0.45,
+   "roughness": 0.52
+  },
+  "headlamp": {
+   "name": "headlamp",
+   "color": [
+    1.0,
+    0.86,
+    0.59
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.18,
+   "emissive": [
+    0.8,
+    0.56,
+    0.23
+   ]
+  },
+  "tail_lamp": {
+   "name": "tail_lamp",
+   "color": [
+    0.54,
+    0.022,
+    0.012
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.24
+  },
+  "safety_yellow": {
+   "name": "safety_yellow",
+   "color": [
+    0.95,
+    0.66,
+    0.045
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.5
+  },
+  "logo": {
+   "name": "go_logo_4a7729",
+   "color": [
+    0.0684781698,
+    0.1844749945,
+    0.0221738848
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.5
+  },
+  "interior_wall": {
+   "name": "interior_wall",
+   "color": [
+    0.62,
+    0.65,
+    0.61
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.82
+  },
+  "interior_floor": {
+   "name": "interior_floor",
+   "color": [
+    0.075,
+    0.092,
+    0.1
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.94
+  },
+  "seat": {
+   "name": "seat_fabric",
+   "color": [
+    0.055,
+    0.18,
+    0.22
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.96
+  },
+  "interior_light": {
+   "name": "interior_light",
+   "color": [
+    0.96,
+    0.94,
+    0.8
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.35,
+   "emissive": [
+    0.8,
+    0.74,
+    0.53
+   ]
+  },
+  "display": {
+   "name": "instrument_display",
+   "color": [
+    0.018,
+    0.16,
+    0.23
+   ],
+   "alpha": 1,
+   "metallic": 0,
+   "roughness": 0.4,
+   "emissive": [
+    0.015,
+    0.21,
+    0.3
+   ]
+  }
+ },
+ "meta": {
+  "generator": "GO Train reference assets",
+  "asset_version": "0.2.0",
+  "dimension_source": "installed workshop mod.txt; height and details approximate",
+  "source": "GO Train reference pack 0.2.0 (go_train.py), rewritten as an editor spec"
+ }
+}

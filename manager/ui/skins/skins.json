@@ -1,0 +1,9 @@
+{
+ "made_by": "tools/make_skins.py",
+ "art": "AI-generated (OpenAI image generation) for Nimby3D",
+ "skins": {
+  "afternoon": "nimby3d-chan_v2_01_cel.png",
+  "sleepy": "nimby3d-chan_v2_03_chibi.png",
+  "nightshift": "nimby3d-chan_v2_04_night.png"
+ }
+}

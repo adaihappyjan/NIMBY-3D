@@ -1,0 +1,137 @@
+{
+  "schema": 2,
+  "native_format": "GOV2",
+  "source_workshop_id": "2388066983",
+  "units": "metres",
+  "axes": {
+    "front": "+X",
+    "up": "+Y",
+    "right": "+Z"
+  },
+  "origin": "vehicle centre X/Z, rail head Y=0",
+  "editor": {
+    "generator": "nimby3d-trainmodel 1"
+  },
+  "models": [
+    {
+      "unit_id": "mp40_bl",
+      "length_m": 20.73,
+      "width_m": 3.2,
+      "dimension_source": "installed workshop mod.txt; height and details approximate",
+      "variants": [
+        {
+          "lod": 0,
+          "native_mesh": "mp40_bl_lod0.gov",
+          "rig": "mp40_bl_lod0.rig.json",
+          "parts": 11,
+          "vertices": 9788,
+          "triangles": 5564,
+          "native_sha256": "7b09e6eefb9568f13330311353075e892b5c636ec3ffe85b0d8ed06bff1b51c4",
+          "rig_sha256": "3e1e0820cbba34726284f2e6045f25ecf077978562f94d9afcadb95b64c96b92"
+        },
+        {
+          "lod": 1,
+          "native_mesh": "mp40_bl_lod1.gov",
+          "rig": "mp40_bl_lod1.rig.json",
+          "parts": 11,
+          "vertices": 4804,
+          "triangles": 2668,
+          "native_sha256": "46cb4c9dcd315a01bb2b03827930ea5c51449d67e6394c6e3a120594a371492f",
+          "rig_sha256": "0f71d8f9235684dcc6f301bf29da89d55bff2803dad21c04fa05e751f3856a86"
+        },
+        {
+          "lod": 2,
+          "native_mesh": "mp40_bl_lod2.gov",
+          "rig": "mp40_bl_lod2.rig.json",
+          "parts": 10,
+          "vertices": 1244,
+          "triangles": 668,
+          "native_sha256": "7be04b2876d0caacc358236957f7598dc8e49a555c4ca2b48351b1223956d352",
+          "rig_sha256": "6db4d96f4391007c93c0db18950dd5393535478ba913a771928dc3140b0384e7"
+        }
+      ],
+      "spec": "mp40_bl.train.json",
+      "generator": "nimby3d-trainmodel 1"
+    },
+    {
+      "unit_id": "bilevel1",
+      "length_m": 25.91,
+      "width_m": 3.0,
+      "dimension_source": "installed workshop mod.txt; height and details approximate",
+      "variants": [
+        {
+          "lod": 0,
+          "native_mesh": "bilevel1_lod0.gov",
+          "rig": "bilevel1_lod0.rig.json",
+          "parts": 21,
+          "vertices": 23894,
+          "triangles": 12518,
+          "native_sha256": "352cec692414cd860f034b6ce610e3e0264e979ba97edbcf7f6f3cbc582bf832",
+          "rig_sha256": "29e43a96e30ffd89f0fcd7e1bb23226017a3d71643823a0a9873c39846d198ad"
+        },
+        {
+          "lod": 1,
+          "native_mesh": "bilevel1_lod1.gov",
+          "rig": "bilevel1_lod1.rig.json",
+          "parts": 21,
+          "vertices": 13582,
+          "triangles": 7038,
+          "native_sha256": "3810610e9a7e1562c02aa756d8d656df842d71703a8a68aa7658f25c3999f9c2",
+          "rig_sha256": "06bd139ec8c0d3dc177f22f581624e8a00c08b3f7422790f95ce8d2c9a8304d4"
+        },
+        {
+          "lod": 2,
+          "native_mesh": "bilevel1_lod2.gov",
+          "rig": "bilevel1_lod2.rig.json",
+          "parts": 18,
+          "vertices": 3700,
+          "triangles": 1888,
+          "native_sha256": "b1bb1a49effbcf1e844b30bfc7f1b2eb55fdf83a580127c71276d9c6b81c14bd",
+          "rig_sha256": "359aad08d26d19a60e610fed09b8189404b0e9791c1c88a5b8f8363efdf36916"
+        }
+      ],
+      "spec": "bilevel1.train.json",
+      "generator": "nimby3d-trainmodel 1"
+    },
+    {
+      "unit_id": "bicab1",
+      "length_m": 25.91,
+      "width_m": 3.0,
+      "dimension_source": "installed workshop mod.txt; height and details approximate",
+      "variants": [
+        {
+          "lod": 0,
+          "native_mesh": "bicab1_lod0.gov",
+          "rig": "bicab1_lod0.rig.json",
+          "parts": 22,
+          "vertices": 24726,
+          "triangles": 13050,
+          "native_sha256": "562c79e2d26371cf3f288d76d77738b2594146b2d4cf63a6a32ac0d596f8d756",
+          "rig_sha256": "6c2d96acdfde3b4bd9fabb668ebd2a4a06ecf6e83fb0be508068cb309231ddf6"
+        },
+        {
+          "lod": 1,
+          "native_mesh": "bicab1_lod1.gov",
+          "rig": "bicab1_lod1.rig.json",
+          "parts": 22,
+          "vertices": 14150,
+          "triangles": 7370,
+          "native_sha256": "4ce9a431af74ead454b382b73ab799f9cb0dc3dc65efd71c258a4100fbe5218f",
+          "rig_sha256": "6d98fccba9ec1d7ff89f1d945b71eae38e45b5918462a0e094e289d803fdd66a"
+        },
+        {
+          "lod": 2,
+          "native_mesh": "bicab1_lod2.gov",
+          "rig": "bicab1_lod2.rig.json",
+          "parts": 18,
+          "vertices": 4004,
+          "triangles": 2052,
+          "native_sha256": "dc940bde8dec46b83bb10b5dbe44577a68ddc8e9f01b050be536bad3e63110ae",
+          "rig_sha256": "4160ba0b57415873ea788a01bb8d35e1a013a61fce7639c6ba6eb55b6ee93837"
+        }
+      ],
+      "spec": "bicab1.train.json",
+      "generator": "nimby3d-trainmodel 1"
+    }
+  ]
+}

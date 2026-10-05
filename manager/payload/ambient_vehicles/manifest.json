@@ -1,0 +1,578 @@
+{
+  "schema": "nimby3d.ambient-assets.v1",
+  "asset_version": "1.2",
+  "installed": false,
+  "units": "metres",
+  "gltf_axes": "+X forward, +Y up, +Z right",
+  "authoring_axes": "+X forward, +Y left, +Z up",
+  "runtime_bindings": {
+    "road_kind": {
+      "0": "sedan",
+      "1": "van",
+      "2": "bus",
+      "3": "truck"
+    },
+    "boat_kind": {
+      "0": "motorboat",
+      "1": "sailboat",
+      "2": "ferry",
+      "3": "barge"
+    }
+  },
+  "extra_variants": {
+    "sedan": [
+      "suv"
+    ]
+  },
+  "models": [
+    {
+      "id": "sedan",
+      "lods": [
+        {
+          "file": "sedan_lod0.glb",
+          "sha256": "ab830106d5541230143d000dec9b5fb1d23bb5aee590f56727fa9335bf639b46",
+          "triangles": 10144,
+          "vertices": 18052,
+          "bounds_authoring_m": [
+            [
+              -2.2980000000000005,
+              -1.0352823885170364,
+              0.0
+            ],
+            [
+              2.2980000000000005,
+              1.0352823885170364,
+              1.4500000000000002
+            ]
+          ]
+        },
+        {
+          "file": "sedan_lod1.glb",
+          "sha256": "04b757afb1ad53dfe1a190a05d8b33a7e1420e2b8e50d35a3fee254871229488",
+          "triangles": 3016,
+          "vertices": 5364,
+          "bounds_authoring_m": [
+            [
+              -2.2980000000000005,
+              -1.0352823885170364,
+              0.0
+            ],
+            [
+              2.2980000000000005,
+              1.0352823885170364,
+              1.45
+            ]
+          ]
+        },
+        {
+          "file": "sedan_lod2.glb",
+          "sha256": "35017bd16f6c043988629eb73fa1efb2e93b981f3b75b3c38b12e06fb2989dd7",
+          "triangles": 952,
+          "vertices": 1660,
+          "bounds_authoring_m": [
+            [
+              -2.2484,
+              -0.9500000000000001,
+              0.0
+            ],
+            [
+              2.2704000000000004,
+              0.9500000000000001,
+              1.45
+            ]
+          ]
+        }
+      ],
+      "origin": "road contact",
+      "wheel_animation": "distance / radius about authoring +Y; preview clip is not a speed controller"
+    },
+    {
+      "id": "suv",
+      "lods": [
+        {
+          "file": "suv_lod0.glb",
+          "sha256": "0c33c5638a2ea15c3904d3261f9a77e279f8c2a902b432adcdffb3a495de12c1",
+          "triangles": 10296,
+          "vertices": 18324,
+          "bounds_authoring_m": [
+            [
+              -2.4730000000000003,
+              -1.0987085811737143,
+              0.0
+            ],
+            [
+              2.4730000000000003,
+              1.0987085811737143,
+              1.863
+            ]
+          ]
+        },
+        {
+          "file": "suv_lod1.glb",
+          "sha256": "bd7f5d1addb31686a83136a0e718293de150759174a4d9f935f5229932bce9e0",
+          "triangles": 3136,
+          "vertices": 5580,
+          "bounds_authoring_m": [
+            [
+              -2.4730000000000003,
+              -1.0987085811737143,
+              0.0
+            ],
+            [
+              2.4730000000000003,
+              1.0987085811737143,
+              1.8599185842870423
+            ]
+          ]
+        },
+        {
+          "file": "suv_lod2.glb",
+          "sha256": "35dd1508d083bec7faddd4b97b7099215541ede83c4440bf95af4ea6f2d4daed",
+          "triangles": 952,
+          "vertices": 1660,
+          "bounds_authoring_m": [
+            [
+              -2.42725,
+              -1.01825,
+              0.0
+            ],
+            [
+              2.451,
+              1.01825,
+              1.7800000000000002
+            ]
+          ]
+        }
+      ],
+      "origin": "road contact",
+      "wheel_animation": "distance / radius about authoring +Y; preview clip is not a speed controller"
+    },
+    {
+      "id": "van",
+      "lods": [
+        {
+          "file": "van_lod0.glb",
+          "sha256": "29cfad36ee8ddbfa5cd50c733c11126ef6886d0b17901be85dc1bd99c6e4e94d",
+          "triangles": 10032,
+          "vertices": 17852,
+          "bounds_authoring_m": [
+            [
+              -2.6980000000000004,
+              -1.093975831078404,
+              0.0
+            ],
+            [
+              2.704,
+              1.093975831078404,
+              2.037
+            ]
+          ]
+        },
+        {
+          "file": "van_lod1.glb",
+          "sha256": "a808e12a43472d92373d40c76734afd7702fec64af4a73b5c7d17a7d3fc0b061",
+          "triangles": 2920,
+          "vertices": 5180,
+          "bounds_authoring_m": [
+            [
+              -2.6980000000000004,
+              -1.093975831078404,
+              0.0
+            ],
+            [
+              2.6980000000000004,
+              1.093975831078404,
+              2.037
+            ]
+          ]
+        },
+        {
+          "file": "van_lod2.glb",
+          "sha256": "72c0b1b81a13acefb80fa66e287eeab6703d68611fde1090e405d31165dbc7c0",
+          "triangles": 912,
+          "vertices": 1620,
+          "bounds_authoring_m": [
+            [
+              -2.6572,
+              -1.0410000000000001,
+              0.0
+            ],
+            [
+              2.6832000000000003,
+              1.0410000000000001,
+              2.037
+            ]
+          ]
+        }
+      ],
+      "origin": "road contact",
+      "wheel_animation": "distance / radius about authoring +Y; preview clip is not a speed controller"
+    },
+    {
+      "id": "bus",
+      "lods": [
+        {
+          "file": "bus_lod0.glb",
+          "sha256": "d8a6c74b4db56d13f98063110a98fd6051ec0da8c4db0cd2839a2ae835e887a5",
+          "triangles": 10870,
+          "vertices": 19534,
+          "bounds_authoring_m": [
+            [
+              -6.132,
+              -1.4829999999999999,
+              0.0
+            ],
+            [
+              6.444000000000001,
+              1.4829999999999999,
+              3.285
+            ]
+          ]
+        },
+        {
+          "file": "bus_lod1.glb",
+          "sha256": "b7b4005a24f2c13cef7c4f48f31f7367030bb2588e3e913b14c5aba45eaf7d0d",
+          "triangles": 3346,
+          "vertices": 6070,
+          "bounds_authoring_m": [
+            [
+              -6.132,
+              -1.4829999999999999,
+              0.0
+            ],
+            [
+              6.444000000000001,
+              1.4829999999999999,
+              3.27
+            ]
+          ]
+        },
+        {
+          "file": "bus_lod2.glb",
+          "sha256": "4d8e6547f6585d55bd298f5c24856ac40c265099c503663bdf75684a9943a176",
+          "triangles": 1162,
+          "vertices": 2150,
+          "bounds_authoring_m": [
+            [
+              -6.132,
+              -1.33125,
+              0.0
+            ],
+            [
+              6.192,
+              1.33125,
+              3.1
+            ]
+          ]
+        }
+      ],
+      "origin": "road contact",
+      "wheel_animation": "distance / radius about authoring +Y; preview clip is not a speed controller"
+    },
+    {
+      "id": "truck",
+      "lods": [
+        {
+          "file": "truck_lod0.glb",
+          "sha256": "e4e0384a8949de811df7d0a0baec7970b889f4454d8311a654d518f6e99e2dac",
+          "triangles": 12490,
+          "vertices": 22238,
+          "bounds_authoring_m": [
+            [
+              -4.8545,
+              -1.455,
+              0.0
+            ],
+            [
+              4.94,
+              1.455,
+              3.5
+            ]
+          ]
+        },
+        {
+          "file": "truck_lod1.glb",
+          "sha256": "b4bd690a1270ae2afd20bafb665dd7e2983ef702f9a471614c2ec26f935a17de",
+          "triangles": 2330,
+          "vertices": 4110,
+          "bounds_authoring_m": [
+            [
+              -4.8545,
+              -1.455,
+              0.0
+            ],
+            [
+              4.902,
+              1.455,
+              3.5
+            ]
+          ]
+        },
+        {
+          "file": "truck_lod2.glb",
+          "sha256": "53703a1f621dc63f74e8af135c94d3a0345785b911572435f5fff723044579e0",
+          "triangles": 898,
+          "vertices": 1622,
+          "bounds_authoring_m": [
+            [
+              -4.8545,
+              -1.3085,
+              0.0
+            ],
+            [
+              4.902,
+              1.3085,
+              3.5
+            ]
+          ]
+        }
+      ],
+      "origin": "road contact",
+      "wheel_animation": "distance / radius about authoring +Y; preview clip is not a speed controller"
+    },
+    {
+      "id": "motorboat",
+      "lods": [
+        {
+          "file": "motorboat_lod0.glb",
+          "sha256": "3e9bbcc5357b7014a26eb6b23dc6cb49022d54e422866a2729695951bae556d7",
+          "triangles": 7948,
+          "vertices": 12338,
+          "bounds_authoring_m": [
+            [
+              -3.7800000000000002,
+              -1.25,
+              -0.44999999999999996
+            ],
+            [
+              3.5233107001135573,
+              1.25,
+              2.35
+            ]
+          ]
+        },
+        {
+          "file": "motorboat_lod1.glb",
+          "sha256": "2195c008f6757cbcd056c90b7fbc0523cb57b736dd502170a059e06313e887db",
+          "triangles": 2500,
+          "vertices": 4254,
+          "bounds_authoring_m": [
+            [
+              -3.7800000000000002,
+              -1.25,
+              -0.44999999999999996
+            ],
+            [
+              3.522,
+              1.25,
+              2.35
+            ]
+          ]
+        },
+        {
+          "file": "motorboat_lod2.glb",
+          "sha256": "263a8163f17d1ae46ddbea294ac9b8b24b5d160cf75c88b7aa718e361be70c06",
+          "triangles": 126,
+          "vertices": 230,
+          "bounds_authoring_m": [
+            [
+              -3.5,
+              -1.25,
+              -0.44999999999999996
+            ],
+            [
+              3.5,
+              1.25,
+              1.74
+            ]
+          ]
+        }
+      ],
+      "origin": "waterline",
+      "wheel_animation": null
+    },
+    {
+      "id": "sailboat",
+      "lods": [
+        {
+          "file": "sailboat_lod0.glb",
+          "sha256": "b60b9a1f50079c254e2c7006ebd8764d83352d61539b5593750f8d14a82fba34",
+          "triangles": 8776,
+          "vertices": 13578,
+          "bounds_authoring_m": [
+            [
+              -5.022,
+              -1.6,
+              -0.576
+            ],
+            [
+              5.022,
+              1.6,
+              14.0
+            ]
+          ]
+        },
+        {
+          "file": "sailboat_lod1.glb",
+          "sha256": "8ddfacadfc7937d3212d6224d650e9017c294e78b4cf5c9e88c417ccfc737dd0",
+          "triangles": 2464,
+          "vertices": 4146,
+          "bounds_authoring_m": [
+            [
+              -5.022,
+              -1.6,
+              -0.576
+            ],
+            [
+              5.022,
+              1.6,
+              13.5
+            ]
+          ]
+        },
+        {
+          "file": "sailboat_lod2.glb",
+          "sha256": "80dd879942e9423983909db4206a24cdbbd822099cc51d8031abeb47d7a9b9bf",
+          "triangles": 154,
+          "vertices": 290,
+          "bounds_authoring_m": [
+            [
+              -5.0,
+              -1.6,
+              -0.576
+            ],
+            [
+              5.0,
+              1.6,
+              13.5
+            ]
+          ]
+        }
+      ],
+      "origin": "waterline",
+      "wheel_animation": null
+    },
+    {
+      "id": "ferry",
+      "lods": [
+        {
+          "file": "ferry_lod0.glb",
+          "sha256": "65e4849df97fa3eada17665cfb15871f6372cb57a22d03a3c2d85bf3c13d7fb0",
+          "triangles": 9160,
+          "vertices": 14162,
+          "bounds_authoring_m": [
+            [
+              -15.022,
+              -4.0,
+              -1.44
+            ],
+            [
+              15.053775468524051,
+              4.0,
+              10.12
+            ]
+          ]
+        },
+        {
+          "file": "ferry_lod1.glb",
+          "sha256": "eeb70b84e959a315747b5874fa49a3a0fa24d9d69864d7d681517b2eef500860",
+          "triangles": 3560,
+          "vertices": 5638,
+          "bounds_authoring_m": [
+            [
+              -15.022,
+              -4.0,
+              -1.44
+            ],
+            [
+              15.044956388237166,
+              4.0,
+              10.12
+            ]
+          ]
+        },
+        {
+          "file": "ferry_lod2.glb",
+          "sha256": "49e24d35e953b6dc1bb9a155b5f31713748948dbc1cbfd47830921417a908d7f",
+          "triangles": 182,
+          "vertices": 342,
+          "bounds_authoring_m": [
+            [
+              -15.0,
+              -4.0,
+              -1.44
+            ],
+            [
+              15.0,
+              4.0,
+              9.18
+            ]
+          ]
+        }
+      ],
+      "origin": "waterline",
+      "wheel_animation": null
+    },
+    {
+      "id": "barge",
+      "lods": [
+        {
+          "file": "barge_lod0.glb",
+          "sha256": "7e9a04beafefd73e50b816aca1d156a1c7de56ce80b35d3b04b0c49850188891",
+          "triangles": 14582,
+          "vertices": 24854,
+          "bounds_authoring_m": [
+            [
+              -30.022,
+              -5.5,
+              -1.98
+            ],
+            [
+              30.04103464219313,
+              5.5,
+              11.63
+            ]
+          ]
+        },
+        {
+          "file": "barge_lod1.glb",
+          "sha256": "dfd477c8b34734eff970ccc1e371f42ffac0fb418d8739eb6080d57bbf4472cc",
+          "triangles": 3122,
+          "vertices": 5354,
+          "bounds_authoring_m": [
+            [
+              -30.022,
+              -5.5,
+              -1.98
+            ],
+            [
+              30.033166476665553,
+              5.5,
+              11.63
+            ]
+          ]
+        },
+        {
+          "file": "barge_lod2.glb",
+          "sha256": "00c737e90d992cc32980aada1fe20b115a440aba320255d53db54e413caf7644",
+          "triangles": 280,
+          "vertices": 538,
+          "bounds_authoring_m": [
+            [
+              -30.0,
+              -5.5,
+              -1.98
+            ],
+            [
+              30.0,
+              5.5,
+              9.48
+            ]
+          ]
+        }
+      ],
+      "origin": "waterline",
+      "wheel_animation": null
+    }
+  ]
+}
